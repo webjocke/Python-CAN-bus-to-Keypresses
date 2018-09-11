@@ -1,4 +1,4 @@
-import serial, pyautogui, time
+import serial, time, uinput
 
 # PySerial can be Downloaded from this Link if needed
 #https://pypi.python.org/pypi/pyserial
@@ -12,6 +12,16 @@ ser.port = '/dev/ttyUSB0'
 ser.timeout = 10 # Specify the TimeOut in seconds, so that SerialPort doesn't hangs
 ser.open() # Opens SerialPort
 
+# ==== Keyboard buttons configurations ====
+device = uinput.Device([
+        uinput.KEY_NEXTSONG,
+        uinput.KEY_PREVIOUSSONG,
+        uinput.KEY_PLAYPAUSE,
+        uinput.KEY_VOLUMEUP,
+	uinput.KEY_VOLUMEDOWN,
+	uinput.KEY_MUTE,
+        uinput.KEY_M,
+        ])
 
 # Check if the connection is open
 while not ser.isOpen():
@@ -24,24 +34,28 @@ while True:
 
     msg = ser.readline() #Read from Serial Port
 
-    # Here are a list of supported keys that can be pressed using pyautogui
-    # https://pyautogui.readthedocs.io/en/latest/keyboard.html#keyboard-keys
+    # Here are a list of supported keys that can be pressed using uinput
+    # https://github.com/torvalds/linux/blob/master/include/uapi/linux/input-event-codes.h#L74
 
-    if msg == not False: # Do nothing if no new message
+    # OpenAuto Supported keys
+    # https://github.com/f1xpl/openauto/wiki/Keyboard-button-bindings
+
+    if msg != False: # Do nothing if no new message
         if msg == "MEDIA-NEXT":
-            pyautogui.press("nexttrack") # Next Track
+            device.emit_click(uinput.KEY_NEXTSONG) # Next Track
         elif msg == "MEDIA-PREVIOUS":
-            pyautogui.press("prevtrack") # Previous Track
+            device.emit_click(uinput.KEY_PREVIOUSSONG) # Previous Track
         elif msg == "MEDIA-PLAYPAUSE":
-            pyautogui.press("playpause") # Play/Pause Music
+            device.emit_click(uinput.KEY_PLAYPAUSE) # Play/Pause Music
         elif msg == "MEDIA-VOLUMEUP":
-            pyautogui.press("volumeup") # Increase Volume
+            device.emit_click(uinput.KEY_VOLUMEUP) # Increase Volume
         elif msg == "MEDIA-VOLUMEDOWN":
-            pyautogui.press("volumedown") # Decrease Volume
+            device.emit_click(uinput.KEY_VOLUMEDOWN) # Decrease Volume
         elif msg == "MEDIA-VOLUMEMUTE":
-            pyautogui.press("volumemute") # Mute Volume
+            device.emit_click(uinput.KEY_MUTE) # Mute Volume
         elif msg == "MEDIA-VOICE":
-            pyautogui.press("m") # Trigger the google assistant on openauto
+            device.emit_click(uinput.KEY_M) # Trigger the google assistant on openauto
 
     # Print raw message for debugging
     print 'RECIVED: ' + msg #Print What is Read from Port
+

@@ -15,17 +15,21 @@ This is a part of my car project. Basically I want to be able to use the media b
 ## How to run
 
 #### Arduino Side
+Normal Arduino stuff, except some modded library files that needs to be replaced. Follow there instructions to get everything installed:
 * Install the MCP-can library in the Arduino IDE.
 * Copy the files in the lib-files/ into the downloaded library's path, replacing the files that are there. (These are a bit modified)
 * Open `canbus-reciver.ino` from this repo and changes the filter ID's for your cars component. The default is the onces for my steeringwheel.
 * Upload the included sketch in this repository to your Arduino.
 
 #### Computer Side
+This python script uses a kernal module named **uinput** to press keyboard keys in linux. Follow there instructions to install everything:
 * Install Raspbian on your Raspberry Pi ([Raspbian Download](https://www.raspberrypi.org/downloads/raspbian/))
-* Run `pip install pyautogui` in the terminal to install a needed library.
+* Run `pip install python-uinput` in the terminal to install a needed library.
 * Run `pip install pyserial` in the terminal to install another needed library.
 * Open `canbus-actions.py` and change it to your likings. The default is to listen for my steering wheel buttons and press coresponding keys.
-* Start the python script and/or make the script run at startup by typing `sudo echo "sudo python /path/to/canbus-actions.py &" >> /etc/rc.local` in the terminal. This should make the script start up on every boot.
+* To make sure that the needed uinput kernal module is loaded on every boot, run `sudo echo "uinput" >> /etc/modules` in the terminal. This should make the module start up on every boot. If you instead, only want to start it once, type `modprobe uinput` in the terminal.
+* Make the python script run at startup by typing `sudo echo "sudo python /path/to/canbus-actions.py &" >> /etc/rc.local` in the terminal. This should make the script start up on every boot. Or you can use `sudo python ./path/to/canbus-actions.py` to runt it once.
+* Restart your pi and it should boot up and start everything.
 
 ## TODO:
 * Make the traffic bidirectional so that the python script can request the Arduino to send out data on the CAN-bus when something is triggered on the computer.

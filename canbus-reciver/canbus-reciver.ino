@@ -30,9 +30,14 @@ unsigned char len = 0;
 unsigned char buf[8];
 
 // For memory
-//unsigned char STEERING_WHEEL_NEXT[3] = {0x1, 0x91, 0x0};
-//unsigned char STEERING_WHEEL_PREVIOUS[3] = {0x1, 0x92, 0x0};
-//unsigned char STEERING_WHEEL_RELEASE[3] = {0x1, 0x0, 0x0};
+//unsigned char STEERING_WHEEL_UP[3] = {0x1, 0x91, 0x0};
+//unsigned char STEERING_WHEEL_DOWN[3] = {0x1, 0x92, 0x0};
+//unsigned char STEERING_WHEEL_VOLUME_UP[3] = {0x8, 0x93, 0x1};
+//unsigned char STEERING_WHEEL_VOLUME_DOWN[3] = {0x8, 0x93, 0xFF};
+//unsigned char STEERING_WHEEL_VOICE[3] = {0x1, 0x81, 0x0};
+//unsigned char STEERING_WHEEL_PHONE[3] = {0x1, 0x82, 0x0};
+//unsigned char STEERING_WHEEL_SIDE_UP[3] = {0x8, 0x83, 0xFF};
+//unsigned char STEERING_WHEEL_SIDE_DOWN[3] = {0x8, 0x83, 0x1};
 
 void setup() {
 
@@ -61,21 +66,32 @@ void loop() {
     // Filter out all frames from the steering wheel
     if (canId == 0x206) { // == steering wheel module
 
-      if (buf[0] == 0x1 && buf[1] == 0x91 && buf[2] == 0x0) { // Media NEXT Button
-        Serial.println("MEDIA-NEXT");
-      } else if (buf[0] == 0x1 && buf[1] == 0x92 && buf[2] == 0x0) { // Media PREVIOUS Button
-        Serial.println("MEDIA-PREVIOUS");
-      } else if (buf[0] == 0x1 && buf[1] == 0x0 && buf[2] == 0x0) { // RELEASE of a Button
-        Serial.println("MEDIA-RELEASE");
-      } else {
-        Serial.println("OTHER-BUTTON");
-      }
+      if (buf[0] == 0x1 && buf[1] == 0x91 && buf[2] == 0x0) { // Up Button
+        Serial.println("UP");
+      } else if (buf[0] == 0x1 && buf[1] == 0x92 && buf[2] == 0x0) { // Down Button
+        Serial.println("DOWN");
+      } else if (buf[0] == 0x8 && buf[1] == 0x93 && buf[2] == 0x1) { // VOLUME UP Button
+        Serial.println("VOLUME-UP");
+      } else if (buf[0] == 0x8 && buf[1] == 0x93 && buf[2] == 0xFF) { // VOLUME DOWN Button
+        Serial.println("VOLUME-DOWN");
+      } else if (buf[0] == 0x1 && buf[1] == 0x81 && buf[2] == 0x00) { // VOICE Button
+        Serial.println("VOICE");
+      } else if (buf[0] == 0x1 && buf[1] == 0x82 && buf[2] == 0x00) { // PHONE Button
+        Serial.println("PHONE");
+      } else if (buf[0] == 0x8 && buf[1] == 0x83 && buf[2] == 0xFF) { // SIDE UP Button
+        Serial.println("SIDE-UP");
+      } else if (buf[0] == 0x8 && buf[1] == 0x83 && buf[2] == 0x1) { // SIDE DOWN Button
+        Serial.println("SIDE-DOWN");
+      }// else {
+      //  Serial.println("OTHER-BUTTON");
+      //}
 
       // === Print all steering wheel data for debugging ===
-      //Serial.print(canId, HEX);
-      //Serial.print(" ");
-      //for(int i = 0; i<len; i++){Serial.print(buf[i]);Serial.print(" ");}
-      //Serial.println();
+      Serial.print("0x");
+      Serial.print(canId, HEX);
+      Serial.print(" ");
+      for(int i = 0; i<len; i++){Serial.print("0x"); Serial.print(buf[i], HEX);Serial.print(" ");}
+      Serial.println();
 
     }
 

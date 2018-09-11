@@ -16,14 +16,15 @@ This is a part of my car project. Basically I want to be able to use the media b
 
 #### Arduino Side
 * Install the MCP-can library in the Arduino IDE.
-* Copy the files in the lib-files/ into the downloaded library's path, replacing the files that are there. (These are a bit modified)
-* Open `canbus-reciver.ino` from this repo and changes the filter ID's for your cars component. The default is the onces for my steeringwheel.
+* Copy the files in the lib-files/ into the downloaded library's folder, replacing the files that are there. (These are a bit modified)
+* Open `canbus-reciver/canbus-reciver.ino` from this repo and changes the filter ID's for your cars component. The default is the onces for my steeringwheel.
 * Upload the included sketch in this repository to your Arduino.
 
 #### Computer Side
 * Install Raspbian on your Raspberry Pi ([Raspbian Download](https://www.raspberrypi.org/downloads/raspbian/))
 * Run `pip install pyautogui` in the terminal to install a needed library.
 * Run `pip install pyserial` in the terminal to install another needed library.
+* Run `pip install regex` in the terminal to install one more needed library.
 * Open `canbus-actions.py` and change it to your likings. The default is to listen for my steering wheel buttons and press coresponding keys.
 * Start the python script and/or make the script run at startup by typing `sudo echo "sudo python /path/to/canbus-actions.py &" >> /etc/rc.local` in the terminal. This should make the script start up on every boot.
 

@@ -38,6 +38,9 @@ while True:
     # Here are a list of supported keys that can be pressed using uinput
     # https://github.com/torvalds/linux/blob/master/include/uapi/linux/input-event-codes.h#L74
 
+    # Open Auto supported buttons
+    # https://github.com/f1xpl/openauto/wiki/Keyboard-button-bindings
+
     msg = msg.decode("utf-8") # Converting from bytes to string
     msg = msg.strip() # Removing weird character like 
 
